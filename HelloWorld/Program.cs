@@ -30,7 +30,9 @@ static void A()
           .AppendLine(new string('*', i * 2 + 1));
     Console.WriteLine(sb);
     Console.WriteLine(sw.ElapsedMilliseconds);
+
     sw.Restart();
+
     for (int i = 0; i < n; i++)
         Console.WriteLine(string.Concat(
             new string(' ', n - i),
