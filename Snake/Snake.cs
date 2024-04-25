@@ -1,4 +1,6 @@
-﻿public class Snake(int x, int y)
+﻿namespace NetSnake;
+
+public class Snake(int x, int y)
 {
     public Direction Direction { get; set; }
 
@@ -12,9 +14,11 @@
             case Direction.Up   : Y -= 1; break;
             default: throw new NotImplementedException();
         }
+
         return true;
     }
 
     public int X { get; set; } = x;
     public int Y { get; set; } = y;
+    public LinkedList<(int X, int Y)> Queue = new();
 }

@@ -1,4 +1,6 @@
-﻿const int BoardWidth = 12;
+﻿using NetSnake;
+
+const int BoardWidth = 12;
 const int BoardHeight = 8;
 
 var snake = new Snake(
@@ -24,6 +26,8 @@ Dictionary<ConsoleKey, Direction> inputToDir = new()
 
 while (true)
 {
+    board.Apple ??= board.CreateApple();
+
     Console.WriteLine(board);
 
     if (inputToDir.TryGetValue(
