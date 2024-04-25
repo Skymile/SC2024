@@ -1,9 +1,10 @@
 ﻿
+[Flags]
 public enum Direction
 {
-    Right,
-    Left,
-    Up,
-    Down,
-    Unknown,
+    Right   = 1,
+    Left    = 2,
+    Up      = 4,
+    Down    = 8,
+    Unknown = 16,
 }
