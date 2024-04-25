@@ -1,5 +1,6 @@
 ﻿using NetSnake;
 
+bool isDebug = true;
 const int BoardWidth = 12;
 const int BoardHeight = 8;
 
@@ -24,20 +25,49 @@ Dictionary<ConsoleKey, Direction> inputToDir = new()
     [ConsoleKey.RightArrow] = Direction.Right,
 };
 
-while (true)
+if (!isDebug)
 {
-    board.Apple ??= board.CreateApple();
+    ConsoleKey key = ConsoleKey.D;
+    
+    var inputTask = Task.Run(() => {
+        while (true)
+            key = Console.ReadKey().Key;
+    });
 
-    Console.WriteLine(board);
-
-    if (inputToDir.TryGetValue(
-            Console.ReadKey().Key, 
-            out Direction direction)
-        )
+    while (true)
     {
-        snake.Direction = direction;
-        snake.Move();
-    }
+        board.Apple ??= board.CreateApple();
+    
+        Console.WriteLine(board);
 
-    Console.Clear();
+        Thread.Sleep(100);
+
+        if (inputToDir.TryGetValue(key, out Direction direction))
+        {
+            snake.Direction = direction;
+            snake.Move();
+        }
+    
+        Console.Clear();
+    }
+}
+else
+{
+    while (true)
+    {
+        board.Apple ??= board.CreateApple();
+
+        Console.WriteLine(board);
+
+        if (inputToDir.TryGetValue(
+                Console.ReadKey().Key, 
+                out Direction direction)
+            )
+        {
+            snake.Direction = direction;
+            snake.Move();
+        }
+
+        Console.Clear();
+    }
 }
