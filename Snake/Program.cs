@@ -1,4 +1,6 @@
-﻿using NetSnake;
+﻿using System.Runtime.InteropServices;
+
+using NetSnake;
 
 bool isDebug = true;
 const int BoardWidth = 12;
@@ -8,7 +10,10 @@ var snake = new Snake(
     Random.Shared.Next(0, 4),
     Random.Shared.Next(2, BoardHeight)
 );
-var board = new Board(BoardWidth, BoardHeight)
+snake.Queue.AddLast(snake.Queue.First!.Value);
+snake.Queue.AddLast(snake.Queue.First!.Value);
+
+Board board = new(BoardWidth, BoardHeight)
 {
     Player = snake,
 };
@@ -66,6 +71,12 @@ else
         {
             snake.Direction = direction;
             snake.Move();
+
+            if (board.IsColliding(snake, board?.Apple))
+            {
+                board.Apple = board.CreateApple();
+                snake.Queue.AddLast((snake.Queue.First!.Value));
+            }
         }
 
         Console.Clear();
