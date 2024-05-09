@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSample", "HelloWorld
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetSnake", "Snake\NetSnake.csproj", "{22BFC189-7F2D-4525-90B5-58A70796DF12}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{AD1313C4-93E9-4C5C-881E-1AF70664FE42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeystrokeApp", "KeystrokeApp\KeystrokeApp.csproj", "{BD1DE0F0-27BB-4333-B6BF-F31FEF24BF99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{22BFC189-7F2D-4525-90B5-58A70796DF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22BFC189-7F2D-4525-90B5-58A70796DF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22BFC189-7F2D-4525-90B5-58A70796DF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD1313C4-93E9-4C5C-881E-1AF70664FE42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD1313C4-93E9-4C5C-881E-1AF70664FE42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD1313C4-93E9-4C5C-881E-1AF70664FE42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD1313C4-93E9-4C5C-881E-1AF70664FE42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1DE0F0-27BB-4333-B6BF-F31FEF24BF99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1DE0F0-27BB-4333-B6BF-F31FEF24BF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1DE0F0-27BB-4333-B6BF-F31FEF24BF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1DE0F0-27BB-4333-B6BF-F31FEF24BF99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
