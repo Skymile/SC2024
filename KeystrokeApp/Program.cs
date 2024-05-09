@@ -1,20 +1,20 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-using static DistanceMetrics;
-
 const string path = @"C:\Keystrokes\";
 
-var keystrokes = Parser.ParseDir(path).ToArray();
+DistanceMetricCallback distance = DistanceMetrics.Euclidean;
+int k = 3;
 
-Console.WriteLine("Hello, World!");
+var all = Parser.ParseDir(path);
 
-public static class Classifier
+foreach ((int Id, Keystroke[] Keystrokes) group in all)
 {
-    // Leave-one-out
-    public static int KNN(
-        SampleSet current,
-        SampleSet[] training,
-        int k,
-        DistanceMetricCallback distance
-    ) => 0;
+	Classifier.KNN(
+        new SampleSet(group.Id, group.Keystrokes)
+		all .Where(i => i != group)
+			.Select(i => new SampleSet(i.Id, i.Keystrokes))
+			.ToArray(),
+		k,
+		distance
+	);
 }
