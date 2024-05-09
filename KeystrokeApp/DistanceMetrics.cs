@@ -1,5 +1,10 @@
 ﻿public static class DistanceMetrics
 {
+    public delegate double DistanceMetricCallback(
+        IEnumerable<double> first,
+        IEnumerable<double> second
+    );
+
     public static double Euclidean(
         IEnumerable<double> first,
         IEnumerable<double> second
