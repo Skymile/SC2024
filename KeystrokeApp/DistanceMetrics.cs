@@ -6,7 +6,7 @@ public delegate double DistanceMetricCallback(
 
 public static class DistanceMetrics
 {
-    public static double Euclidean(
+    public static DistanceMetricCallback Euclidean = (
         IEnumerable<double> first,
         IEnumerable<double> second
     ) => Math.Sqrt(
@@ -14,13 +14,13 @@ public static class DistanceMetrics
     ); 
     // euclidean(A, B) = sqrt( (A_x-B_x)^2 + (A_y + B_y)^2 )
 
-    public static double Manhattan(
+    public static DistanceMetricCallback Manhattan = (
         IEnumerable<double> first,
         IEnumerable<double> second
     ) => first.Zip(second, (f, s) => Math.Abs(f - s)).Sum();
     // manhattan(A, B) = |A_x - B_x| + |A_y - B_y|
 
-    public static double Chebyshev(
+    public static DistanceMetricCallback Chebyshev = (
         IEnumerable<double> first,
         IEnumerable<double> second
     ) => first.Zip(second, (f, s) => Math.Abs(f - s)).Max();
