@@ -1,14 +1,13 @@
-﻿
-
-public static class Parser
+﻿public static class Parser
 {
-    public static IEnumerable<(int Id, Keystroke[] Keystrokes)>
+    public static IEnumerable<IGrouping<int, Keystroke[]>>
         ParseDir(string directory) =>
-        from file in Directory.GetFiles(directory)
-        where file.EndsWith(".txt")
+        from file in Directory.GetFiles(directory) // Select
+        where file.EndsWith(".txt") // Filtrowanie
         let keystrokes = ParseFile(file).ToArray()
         let id = int.Parse(Path.GetFileName(file)[1..3])
-        select (id, keystrokes);
+        group keystrokes by id into gr
+        select gr;
 
     public static IEnumerable<Keystroke> ParseFile(string path) =>
         ParseLines(File.ReadLines(path));

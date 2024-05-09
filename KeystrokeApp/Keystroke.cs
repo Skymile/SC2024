@@ -5,6 +5,8 @@ public record Keystroke(
         int OnRelease
     )
 {
+    public double DwellTime => OnRelease;
+
     // Pure functions
     // 1. No side effects
     // 2. If input doesn't change, output as well
