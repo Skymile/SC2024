@@ -22,6 +22,9 @@
                 Click="Button_Click" />
             
             <TextBox Text="{Binding SampleText}"/>
+            <Slider Minimum="0" Maximum="255" Value="128"
+                    ValueChanged="Slider_ValueChanged"
+                    ></Slider>
         </StackPanel>
 
         <StackPanel Grid.Column="1">

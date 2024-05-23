@@ -1,8 +1,5 @@
 ﻿using System.Drawing;
-using System.IO;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 // MVVM
 // Model-View-ViewModel
@@ -15,36 +12,34 @@ using System.Windows.Media.Imaging;
 
 namespace WpfApp1
 {
-    public static class BitmapExtensions
-    {
-        public static ImageSource ToBitmapSource(this Bitmap bmp)
-        {
-            MemoryStream ms = new MemoryStream();
-            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-
-            ms.Seek(0, SeekOrigin.Begin);
-
-            image.StreamSource = ms;
-            image.EndInit();
-            return image;
-        }
-    }
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Bitmap _input;
+        private Bitmap _output;
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm = new MainWindowVM();
 
-            var bmp = new Bitmap("C:/Samples/apple.png");
+            _algo = new Algorithm();
 
+            _input = new Bitmap("C:/Samples/apple.png");
+            _output = new Bitmap("C:/Samples/apple.png");
+
+            var bmp = _algo.ApplyBinarization(_input, _output, 128);
+            MainImg.Source = bmp.ToBitmapSource();
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_algo is null) 
+                return;
+
+            var bmp = _algo.ApplyBinarization(_input, _output, (int)e.NewValue);
             MainImg.Source = bmp.ToBitmapSource();
         }
 
@@ -55,5 +50,6 @@ namespace WpfApp1
         }
 
         private MainWindowVM _vm;
+        private Algorithm _algo;
     }
 }
