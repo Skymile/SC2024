@@ -12,6 +12,16 @@ using System.Windows;
 
 namespace WpfApp1
 {
+    public class MainWindowVM : ViewModel
+    {
+
+    }
+
+    public abstract class ViewModel
+    {
+
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -34,6 +44,23 @@ namespace WpfApp1
         }
         private string sampleText;
 
+        public int SampleLength
+        {
+            get => sampleLength;
+            set
+            {
+                sampleLength = value;
+                PropertyChanged?.Invoke(this, new(nameof(SampleLength)));
+            }
+        }
+        private int sampleLength;
+
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SampleText = "abc";
+            SampleLength = 4;
+        }
     }
 }

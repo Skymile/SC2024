@@ -16,8 +16,18 @@
             <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Column="0" Text="{Binding SampleText}"/>
-        <Label   Grid.Column="1" Content="{Binding SampleText}"/>
+        <StackPanel Orientation="Vertical">
+            <Button 
+                Content="Click!"
+                Click="Button_Click" />
+            
+            <TextBox Text="{Binding SampleText}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Label Content="{Binding SampleText}"/>
+            <Label Content="{Binding SampleLength}"/>
+        </StackPanel>
 
         <Label 
             Grid.ColumnSpan="2" 
