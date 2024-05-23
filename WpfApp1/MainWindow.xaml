@@ -25,8 +25,9 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1">
-            <Label Content="{Binding SampleText}"/>
-            <Label Content="{Binding SampleLength}"/>
+            <Image 
+                x:Name="MainImg"
+                Source="{Binding ImgPath}"/>
         </StackPanel>
 
         <Label 

@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 // MVVM
 // Model-View-ViewModel
@@ -11,6 +15,24 @@
 
 namespace WpfApp1
 {
+    public static class BitmapExtensions
+    {
+        public static ImageSource ToBitmapSource(this Bitmap bmp)
+        {
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            image.StreamSource = ms;
+            image.EndInit();
+            return image;
+        }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -20,6 +42,10 @@ namespace WpfApp1
         {
             InitializeComponent();
             DataContext = _vm = new MainWindowVM();
+
+            var bmp = new Bitmap("C:/Samples/apple.png");
+
+            MainImg.Source = bmp.ToBitmapSource();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
