@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+using System.Windows.Automation.Peers;
+using System.Windows.Controls.Primitives;
 
 // MVVM
 // Model-View-ViewModel
@@ -13,48 +13,100 @@ using System.Runtime.InteropServices;
 
 namespace WpfApp1
 {
-    public class Algorithm
+    public static class Algorithms
     {
-        public Bitmap ApplyBinarization(Bitmap read, Bitmap write, int threshold)
+        //public Picture ApplyNiblack(Picture read, Picture write, int threshold)
+        //{
+        //}
+        //
+        //public Picture ApplyBinarization(Picture read, Picture write, int threshold)
+        //{
+        //}
+    }
+
+    public class K3MBinarization { }
+
+    public class PhansalkarBinarization : NiblackBinarization 
+    {
+        public override double Formulae(double std, double mean) =>
+            std;
+    }
+
+    public class SauvolaBinarization    : NiblackBinarization 
+    {
+        public override double Formulae(double std, double mean) =>
+            std;
+    }
+
+    public class NiblackBinarization : AlgorithmBase
+    {
+        public double K { get; set; } = 0.2;
+        public int WindowSize { get; set; } = 3;
+
+        public override void Apply(Picture read, Picture write)
+        {
+            int wndHalf = WindowSize / 2;
+
+            for (int x = wndHalf; x < read.Width - wndHalf; x++)
+            {
+                for (int y = wndHalf; y < read.Height - wndHalf; y++)
+                {
+                    double mean = 0;
+
+                    for (int mx = -wndHalf; mx < wndHalf; ++mx)
+                        for (int my = -wndHalf; my < wndHalf; my++)
+                        {
+                            var c = read[x + mx, y + my];
+                            mean += (c.R + c.G + c.B) / 3;
+                        }
+
+                    mean /= WindowSize * WindowSize;
+
+                    double std = 0;
+
+                    for (int mx = -wndHalf; mx < wndHalf; ++mx)
+                        for (int my = -wndHalf; my < wndHalf; my++)
+                        {
+                            var c = read[x + mx, y + my];
+                            int rgb = (c.R + c.G + c.B) / 3;
+                            std += Math.Sqrt(rgb * rgb - mean * mean);
+                        }
+
+                    std /= WindowSize * WindowSize;
+
+                    var value = Formulae(std, mean) < read[x, y].R ? 255 : 0;
+
+                    write[x, y] = Color.FromArgb(value, value, value);
+                }
+            }
+        }
+
+        public virtual double Formulae(double std, double mean) =>
+            K * std + mean;
+    }
+
+    public class ThresholdBinarization : AlgorithmBase
+    {
+        public required int Threshold { get; set; }
+
+        public override void Apply(Picture pic)
         {
             const int channels = 3;
 
-            var readData = read.LockBits(
-                new Rectangle(Point.Empty, read.Size),
-                ImageLockMode.ReadOnly, 
-                read.PixelFormat);
-            var writeData = write.LockBits(
-                new Rectangle(Point.Empty, read.Size),
-                ImageLockMode.WriteOnly,
-                read.PixelFormat);
-
-            int length = readData.Width * channels * readData.Height;
-            byte[] r = new byte[length];
-            byte[] w = new byte[length];
-
-            Marshal.Copy(readData.Scan0, r, 0, r.Length);
-
-            for (int i = 0; i < r.Length; i += channels)
+            for (int i = 0; i < pic.LengthInBytes; i += channels)
             {
                 int sum = 0;
                 for (int j = 0; j < channels; ++j)
-                    sum += r[i + j];
+                    sum += pic[i + j];
                 sum /= channels;
 
-                byte value = sum > threshold
+                byte value = sum > Threshold
                     ? byte.MaxValue
                     : byte.MinValue;
 
                 for (int j = 0; j < channels; j++)
-                    w[i + j] = value;
+                    pic[i + j] = value;
             }
-
-            Marshal.Copy(w, 0, writeData.Scan0, r.Length);
-            
-            read.UnlockBits(readData);
-            write.UnlockBits(writeData);
-            
-            return write;
         }
     }
 }

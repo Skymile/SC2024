@@ -22,7 +22,7 @@
                 Click="Button_Click" />
             
             <TextBox Text="{Binding SampleText}"/>
-            <Slider Minimum="0" Maximum="255" Value="128"
+            <Slider Minimum="20" Maximum="50" Value="30"
                     ValueChanged="Slider_ValueChanged"
                     ></Slider>
         </StackPanel>

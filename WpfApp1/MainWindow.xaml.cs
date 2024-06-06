@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 // MVVM
 // Model-View-ViewModel
@@ -17,30 +17,31 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Bitmap _input;
-        private Bitmap _output;
+        private Picture _input;
+        private Picture _output;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm = new MainWindowVM();
 
-            _algo = new Algorithm();
+            _input  = new Picture("C:/Samples/cat.png");
+            _output = new Picture("C:/Samples/cat.png");
 
-            _input = new Bitmap("C:/Samples/apple.png");
-            _output = new Bitmap("C:/Samples/apple.png");
-
-            var bmp = _algo.ApplyBinarization(_input, _output, 128);
-            MainImg.Source = bmp.ToBitmapSource();
+            var algo = new NiblackBinarization();
+            algo.K = 3;
+            algo.Apply(_input, _output);
+            MainImg.Source = _output.ToSource();
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_algo is null) 
+            if (_input is null) 
                 return;
-
-            var bmp = _algo.ApplyBinarization(_input, _output, (int)e.NewValue);
-            MainImg.Source = bmp.ToBitmapSource();
+            var algo = new NiblackBinarization();
+            algo.K = e.NewValue / 10;
+            algo.Apply(_input, _output);
+            MainImg.Source = _output.ToSource();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -50,6 +51,5 @@ namespace WpfApp1
         }
 
         private MainWindowVM _vm;
-        private Algorithm _algo;
     }
 }
