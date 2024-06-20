@@ -13,18 +13,14 @@ using System.Windows.Controls.Primitives;
 
 namespace WpfApp1
 {
-    public static class Algorithms
+    public class K3MThinning : AlgorithmBase
     {
-        //public Picture ApplyNiblack(Picture read, Picture write, int threshold)
-        //{
-        //}
-        //
-        //public Picture ApplyBinarization(Picture read, Picture write, int threshold)
-        //{
-        //}
-    }
+        public override void Apply(Picture read, Picture write)
+        {
 
-    public class K3MBinarization { }
+
+        }
+    }
 
     public class PhansalkarBinarization : NiblackBinarization 
     {

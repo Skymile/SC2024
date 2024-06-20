@@ -17,6 +17,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string _defaultFilename = "C:/Samples/fingerprint.png";
         private Picture _input;
         private Picture _output;
 
@@ -25,11 +26,11 @@ namespace WpfApp1
             InitializeComponent();
             DataContext = _vm = new MainWindowVM();
 
-            _input  = new Picture("C:/Samples/cat.png");
-            _output = new Picture("C:/Samples/cat.png");
+            _input  = new Picture(_defaultFilename);
+            _output = new Picture(_defaultFilename);
 
-            var algo = new NiblackBinarization();
-            algo.K = 3;
+            var algo = new K3MThinning();
+            //algo.K = 3;
             algo.Apply(_input, _output);
             MainImg.Source = _output.ToSource();
         }
