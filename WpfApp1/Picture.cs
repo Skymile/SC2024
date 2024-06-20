@@ -16,6 +16,7 @@ namespace WpfApp1
     public class Picture(Bitmap bmp, string filename = "Unnamed.png")
     {
         public string Filename => filename;
+        public bool IsAutoUpdateOff { get; set; }
 
         public int LengthInBytes => _raw.Length;
         public int LengthInPixels => bmp.Width * bmp.Height;
@@ -35,7 +36,7 @@ namespace WpfApp1
             {
                 Contract.Requires<IndexOutOfRangeException>(i >= 0 && i < _raw.Length);
 
-                if (_isDirty)
+                if (_isDirty && !IsAutoUpdateOff)
                     Update();
                 return _raw[i];
             }
@@ -52,7 +53,7 @@ namespace WpfApp1
         {
             get 
             {
-                if (_isDirty)
+                if (_isDirty && !IsAutoUpdateOff)
                     Update();
                 int index = x * 3 + y * bmp.Width * 3;
                 return Color.FromArgb(
@@ -91,7 +92,7 @@ namespace WpfApp1
             bmp.UnlockBits(data);
         }
 
-        private void Update()
+        public void Update()
         {
             var data = bmp.LockBits(
                 new Rectangle(Point.Empty, bmp.Size),

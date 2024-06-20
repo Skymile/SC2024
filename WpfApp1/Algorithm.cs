@@ -13,15 +13,6 @@ using System.Windows.Controls.Primitives;
 
 namespace WpfApp1
 {
-    public class K3MThinning : AlgorithmBase
-    {
-        public override void Apply(Picture read, Picture write)
-        {
-
-
-        }
-    }
-
     public class PhansalkarBinarization : NiblackBinarization 
     {
         public override double Formulae(double std, double mean) =>
