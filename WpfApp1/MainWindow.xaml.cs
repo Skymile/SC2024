@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
+
+using WpfApp1.Algorithms;
 
 // MVVM
 // Model-View-ViewModel
@@ -17,7 +20,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string _defaultFilename = "C:/Samples/fingerprint.png";
+        private const string _defaultFilename = "C:/Samples/apple.png";
         private Picture _input;
         private Picture _output;
 
@@ -28,11 +31,48 @@ namespace WpfApp1
 
             _input  = new Picture(_defaultFilename);
             _output = new Picture(_defaultFilename);
-
-            var algo = new K3MThinning();
-            //algo.K = 3;
-            algo.Apply(_input, _output);
             MainImg.Source = _output.ToSource();
+
+            foreach (var type in Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(i => !i.IsAbstract && i.IsSubclassOf(typeof(AlgorithmBase))))
+            {
+                string name = type.Name
+                    .Replace("Thinning", string.Empty)
+                    .Replace("Binarization", string.Empty);
+
+                var btn = new Button { Content = name };
+                var algorithm = (AlgorithmBase)Activator.CreateInstance(type)!;
+
+                btn.Click += (sender, e) =>
+                {
+                    algorithm.Apply(_input, _output);
+                    MainImg.Source = _output.ToSource();
+                };
+
+                StkPanel.Children.Add(btn);
+
+                var properties = type.GetProperties();
+
+                foreach (var prop in properties)
+                {
+                    var slider = new Slider();
+                    slider.Value = 2;
+                    slider.Minimum = 0;
+                    slider.Maximum = 255;
+                    slider.ValueChanged += (sender, e) =>
+                    {
+                        StatusLbl.Content = $"{prop.Name}: {Math.Round(slider.Value)}";
+
+                        prop.SetValue(algorithm,
+                            Convert.ChangeType(slider.Value, prop.PropertyType)
+                        );
+                    };
+
+                    StkPanel.Children.Add(new Label { Content = prop.Name });
+                    StkPanel.Children.Add(slider);
+                }
+            }
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

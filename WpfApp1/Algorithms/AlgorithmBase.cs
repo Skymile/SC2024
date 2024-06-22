@@ -1,13 +1,4 @@
-﻿// MVVM
-// Model-View-ViewModel
-// Model
-//   Odpowiada za dane
-// View
-//   XAML i bindingi (wiązania danych)
-// ViewModel
-//   Dane widoku + logika
-
-namespace WpfApp1
+﻿namespace WpfApp1.Algorithms
 {
     public abstract class AlgorithmBase
     {

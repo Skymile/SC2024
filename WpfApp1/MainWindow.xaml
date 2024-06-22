@@ -8,32 +8,36 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical">
-            <Button 
-                Content="Click!"
-                Click="Button_Click" />
+        <StackPanel Margin="30 15"
+            Orientation="Vertical" 
+            Name="StkPanel" />
+        <!--<Button 
+            Content="Click!"
+            Click="Button_Click" />
             
-            <TextBox Text="{Binding SampleText}"/>
-            <Slider Minimum="20" Maximum="50" Value="30"
-                    ValueChanged="Slider_ValueChanged"
-                    ></Slider>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1">
-            <Image 
-                x:Name="MainImg"
-                Source="{Binding ImgPath}"/>
-        </StackPanel>
+        <TextBox Text="{Binding SampleText}"/>
+        <Slider Minimum="20" Maximum="50" Value="30"
+                ValueChanged="Slider_ValueChanged"
+                ></Slider>-->
+        
+        <Image Grid.Column="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            RenderOptions.BitmapScalingMode="NearestNeighbor"
+            x:Name="MainImg"
+            Source="{Binding ImgPath}"/>
 
         <Label 
+            Name="StatusLbl"
+            FontSize="24"
             Grid.ColumnSpan="2" 
             Grid.Row="1"
             Background="red"

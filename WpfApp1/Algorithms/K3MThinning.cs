@@ -1,36 +1,7 @@
-﻿using System.Drawing.Text;
-using System.Security.Cryptography;
-using System.Windows.Media.Animation;
-
-using Microsoft.Windows.Themes;
-
-namespace WpfApp1;
+﻿namespace WpfApp1.Algorithms;
 
 public class K3MThinning : AlgorithmBase
 {
-    private bool[] A0 = MakeSet(3, 6, 7, 12, 14, 15, 24, 28, 30, 31, 48, 56, 60, 62, 63, 96, 112, 120, 124, 126, 127, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254);
-
-    private bool[][] Lookups = [
-        MakeSet(7, 14, 28, 56, 112, 131, 193, 224),
-        MakeSet(7, 14, 15, 28, 30, 56, 60, 112, 120, 131, 135, 193, 195, 224, 225, 240),
-        MakeSet(7, 14, 15, 28, 30, 31, 56, 60, 62, 112, 120, 124, 131, 135, 143, 193, 195, 199, 224, 225, 227, 240, 241, 248),
-        MakeSet(7, 14, 15, 28, 30, 31, 56, 60, 62, 63, 112, 120, 124, 126, 131, 135, 143, 159, 193, 195, 199, 207, 224, 225, 227, 231, 240, 241, 243, 248, 249, 252),
-        MakeSet(7, 14, 15, 28, 30, 31, 56, 60, 62, 63, 112, 120, 124, 126, 131, 135, 143, 159, 191, 193, 195, 199, 207, 224, 225, 227, 231, 239, 240, 241, 243, 248, 249, 251, 252, 254),
-    ];
-
-    private bool[] A0pix = MakeSet(3, 6, 7, 12, 14, 15, 24, 28, 30, 31, 48, 56, 60, 62, 63, 96, 112, 120, 124, 126, 127, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254);
-
-    private static bool[] MakeSet(params int[] values)
-    {
-        var arr = new bool[256];
-        for (int i = 0; i < values.Length; i++)
-            arr[values[i]] = true;
-        return arr;
-    }
-
-    private const byte Zero = byte.MaxValue;
-    private const byte One  = byte.MinValue;
-
     public override void Apply(Picture read)
     {
         read.IsAutoUpdateOff = true;
@@ -58,7 +29,7 @@ public class K3MThinning : AlgorithmBase
         int[] borders = new int[onesCount];
 
         int count;
-        while (true) 
+        while (true)
         {
             count = 0;
 
@@ -94,7 +65,7 @@ public class K3MThinning : AlgorithmBase
         {
             int offset = borders[j];
             int sum = ComputeSum(read, offset);
-        
+
             if (read[offset] == One && A0pix[sum])
             {
                 read[offset + 0] = Zero;
@@ -107,6 +78,30 @@ public class K3MThinning : AlgorithmBase
         read.IsAutoUpdateOff = false;
     }
 
+    private bool[] A0 = MakeSet(3, 6, 7, 12, 14, 15, 24, 28, 30, 31, 48, 56, 60, 62, 63, 96, 112, 120, 124, 126, 127, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254);
+
+    private bool[][] Lookups = [
+        MakeSet(7, 14, 28, 56, 112, 131, 193, 224),
+        MakeSet(7, 14, 15, 28, 30, 56, 60, 112, 120, 131, 135, 193, 195, 224, 225, 240),
+        MakeSet(7, 14, 15, 28, 30, 31, 56, 60, 62, 112, 120, 124, 131, 135, 143, 193, 195, 199, 224, 225, 227, 240, 241, 248),
+        MakeSet(7, 14, 15, 28, 30, 31, 56, 60, 62, 63, 112, 120, 124, 126, 131, 135, 143, 159, 193, 195, 199, 207, 224, 225, 227, 231, 240, 241, 243, 248, 249, 252),
+        MakeSet(7, 14, 15, 28, 30, 31, 56, 60, 62, 63, 112, 120, 124, 126, 131, 135, 143, 159, 191, 193, 195, 199, 207, 224, 225, 227, 231, 239, 240, 241, 243, 248, 249, 251, 252, 254),
+    ];
+
+    private bool[] A0pix = MakeSet(3, 6, 7, 12, 14, 15, 24, 28, 30, 31, 48, 56, 60, 62, 63, 96, 112, 120, 124, 126, 127, 129, 131, 135, 143, 159, 191, 192, 193, 195, 199, 207, 223, 224, 225, 227, 231, 239, 240, 241, 243, 247, 248, 249, 251, 252, 253, 254);
+
+    private static bool[] MakeSet(params int[] values)
+    {
+        var arr = new bool[256];
+        for (int i = 0; i < values.Length; i++)
+            arr[values[i]] = true;
+        return arr;
+    }
+
+    private const byte Zero = byte.MaxValue; // White pixels 255
+    private const byte One = byte.MinValue; // Black pixels   0
+
+
     private int ComputeSum(Picture read, int offset)
     {
         int y = read.Width * read.Channels;
@@ -114,15 +109,13 @@ public class K3MThinning : AlgorithmBase
 
         return 0xFF - (
             read[offset - y - x] & 1 << 7 |
-            read[offset - x    ] & 1 << 6 |
+            read[offset - x] & 1 << 6 |
             read[offset + y - x] & 1 << 5 |
-            read[offset + y    ] & 1 << 4 |
+            read[offset + y] & 1 << 4 |
             read[offset + y + x] & 1 << 3 |
-            read[offset + x    ] & 1 << 2 |
+            read[offset + x] & 1 << 2 |
             read[offset - y + x] & 1 << 1 |
-            read[offset - y    ] & 1 << 0
+            read[offset - y] & 1 << 0
         );
     }
-
-
 }

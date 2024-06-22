@@ -1,30 +1,9 @@
 ﻿using System.Drawing;
-using System.Windows.Automation.Peers;
-using System.Windows.Controls.Primitives;
 
-// MVVM
-// Model-View-ViewModel
-// Model
-//   Odpowiada za dane
-// View
-//   XAML i bindingi (wiązania danych)
-// ViewModel
-//   Dane widoku + logika
+using WpfApp1.Algorithms;
 
 namespace WpfApp1
 {
-    public class PhansalkarBinarization : NiblackBinarization 
-    {
-        public override double Formulae(double std, double mean) =>
-            std;
-    }
-
-    public class SauvolaBinarization    : NiblackBinarization 
-    {
-        public override double Formulae(double std, double mean) =>
-            std;
-    }
-
     public class NiblackBinarization : AlgorithmBase
     {
         public double K { get; set; } = 0.2;
@@ -70,30 +49,5 @@ namespace WpfApp1
 
         public virtual double Formulae(double std, double mean) =>
             K * std + mean;
-    }
-
-    public class ThresholdBinarization : AlgorithmBase
-    {
-        public required int Threshold { get; set; }
-
-        public override void Apply(Picture pic)
-        {
-            const int channels = 3;
-
-            for (int i = 0; i < pic.LengthInBytes; i += channels)
-            {
-                int sum = 0;
-                for (int j = 0; j < channels; ++j)
-                    sum += pic[i + j];
-                sum /= channels;
-
-                byte value = sum > Threshold
-                    ? byte.MaxValue
-                    : byte.MinValue;
-
-                for (int j = 0; j < channels; j++)
-                    pic[i + j] = value;
-            }
-        }
     }
 }
